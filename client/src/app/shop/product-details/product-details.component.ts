@@ -1,3 +1,4 @@
+import { BasketService } from './../../basket/basket.service';
 import { ShopService } from './../shop.service';
 import { Component, OnInit } from '@angular/core';
 import { IProduct } from 'src/app/models/product';
@@ -11,10 +12,12 @@ import { BreadcrumbService } from 'xng-breadcrumb';
 })
 export class ProductDetailsComponent implements OnInit {
   product: IProduct;
+  quantity = 1;
   constructor(
     private shopService: ShopService,
     private activatedRoute: ActivatedRoute,
-    private bcService: BreadcrumbService
+    private bcService: BreadcrumbService,
+    private basketService: BasketService
   ) {
     this.bcService.set('@productDetails', ' ');
   }
@@ -34,5 +37,14 @@ export class ProductDetailsComponent implements OnInit {
           console.log(error);
         }
       );
+  }
+  addItemToBasket() {
+    this.basketService.addItemToBasket(this.product, this.quantity);
+  }
+  incrementQuantity() {
+    this.quantity++;
+  }
+  decrementQuantity() {
+    if (this.quantity > 1) this.quantity--;
   }
 }
